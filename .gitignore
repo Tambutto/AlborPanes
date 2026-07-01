@@ -1,0 +1,20 @@
+# Node.js
+node_modules/
+dist/
+build/
+
+#Typescript - # Evita subir archivos temporales de compilacion de typescript
+
+*.tsbuildinfo 
+
+#Enviroment variables - protege tus credenciales y configuraciones sensibles.
+.env
+
+#Logs - 
+npm-dbug.log*
+yarn-debug.log*
+yarn-error.log*
+
+#Sistema operativo - evita subir basura de Windows/Mac
+.DS_Store
+Thumbs.db
