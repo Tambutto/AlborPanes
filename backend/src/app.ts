@@ -3,6 +3,7 @@ import cors from "cors"
 
 import panesRouter from "./routes/panes";
 import pedidosRouter from "./routes/pedidos";
+import usuariosRouter from "./routes/usuarios";
 
 const app = express();
 
@@ -19,4 +20,5 @@ app.get("/", (req, res) => {
 //Monto las rutas
 app.use("/panes", panesRouter);
 app.use("/pedidos", pedidosRouter);
+app.use("/usuarios", usuariosRouter);
 export default app;

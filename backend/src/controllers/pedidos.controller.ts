@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Pedido from "../models/pedidos";
+import { IPedidos } from "../models/pedidos";
 
 interface PedidosController {
   getPedidos: (req: Request, res: Response) => Promise<void>;
@@ -14,7 +15,7 @@ const pedidosController = {
     // Crear un pedido
   createPedido: async (req: Request, res: Response): Promise<void> => {
     try {
-      const nuevoPedido = new Pedido(req.body);
+      const nuevoPedido: IPedidos = new Pedido(req.body);
       await nuevoPedido.save();
       res.status(201).json(nuevoPedido);
     } catch (error: any) {
@@ -26,7 +27,7 @@ const pedidosController = {
     // Obtener todos los pedidos
     getPedidos: async (req: Request, res: Response): Promise<void> => {
         try {
-            const pedidos = await Pedido.find();
+            const pedidos: IPedidos[] = await Pedido.find();
             res.json(pedidos);
         } catch (error: any) {
             res.status(500).json({ error: 'Error al obtener los pedidos' });
@@ -36,7 +37,7 @@ const pedidosController = {
     // Obtener un pedido por ID
     getPedidoById: async (req: Request, res: Response): Promise<void> => {
         try {
-            const pedido = await Pedido.findById(req.params.id);
+            const pedido: IPedidos | null = await Pedido.findById(req.params.id);
             if (!pedido) {
                 res.status(404).json({ error: 'Pedido no encontrado' });
                 return;
@@ -50,7 +51,7 @@ const pedidosController = {
     // Actualizar un pedido existente
     updatePedido: async (req: Request, res: Response): Promise<void> => {
         try {
-            const pedido = await Pedido.findByIdAndUpdate(req.params.id, req.body, { new: true });
+            const pedido: IPedidos | null = await Pedido.findByIdAndUpdate(req.params.id, req.body, { new: true });
             if (!pedido) {
                 res.status(404).json({ error: 'Pedido no encontrado' });
                 return;
@@ -64,7 +65,7 @@ const pedidosController = {
     // Eliminar un pedido
     deletePedido: async (req: Request, res: Response): Promise<void> => {
         try {
-            const pedido = await Pedido.findByIdAndDelete(req.params.id);
+            const pedido: IPedidos | null = await Pedido.findByIdAndDelete(req.params.id);
             if (!pedido) {
                 res.status(404).json({ error: 'Pedido no encontrado' });
                 return;
