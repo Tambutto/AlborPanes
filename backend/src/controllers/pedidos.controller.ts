@@ -14,67 +14,84 @@ const pedidosController = {
     
     // Crear un pedido
   createPedido: async (req: Request, res: Response): Promise<void> => {
-    try {
-      const nuevoPedido: IPedidos = new Pedido(req.body);
-      await nuevoPedido.save();
-      res.status(201).json(nuevoPedido);
-    } catch (error: any) {
-      
-      res.status(500).json({ error: "Error al crear el pedido" });
-    }
-  },
+  try {
+    const nuevoPedido = new Pedido({
+      usuario: req.body.usuarioId,   // ID del usuario
+      panes: req.body.panesIds,      // array de IDs de panes
+      total: req.body.total
+    });
+    await nuevoPedido.save();
+    res.status(201).json(nuevoPedido);
+  } catch (error: any) {
+    res.status(500).json({ error: "Error al crear el pedido" });
+  }
+},
+
     
     // Obtener todos los pedidos
     getPedidos: async (req: Request, res: Response): Promise<void> => {
-        try {
-            const pedidos: IPedidos[] = await Pedido.find();
-            res.json(pedidos);
-        } catch (error: any) {
-            res.status(500).json({ error: 'Error al obtener los pedidos' });
-        }
-    },
+  try {
+    const pedidos = await Pedido.find()
+      .populate("usuario", "nombre email") // Solo traer nombre y email del usuario
+      .populate("panes", "nombre precio stock"); // Solo traer nombre, precio y stock del pan
+    res.json(pedidos);
+  } catch (error: any) {
+    res.status(500).json({ error: "Error al obtener los pedidos" });
+  }
+},
+
 
     // Obtener un pedido por ID
     getPedidoById: async (req: Request, res: Response): Promise<void> => {
-        try {
-            const pedido: IPedidos | null = await Pedido.findById(req.params.id);
-            if (!pedido) {
-                res.status(404).json({ error: 'Pedido no encontrado' });
-                return;
-            }
-            res.json(pedido);
-        } catch (error: any) {
-            res.status(500).json({ error: 'Error al obtener el pedido' });
-        }
-    },
+  try {
+    const pedido = await Pedido.findById(req.params.id)
+      .populate("usuario", "nombre email") // solo nombre y email)
+      .populate("panes", "nombre precio stock"); // solo estos campos);
+    if (!pedido) {
+      res.status(404).json({ error: "Pedido no encontrado" });
+      return;
+    }
+    res.json(pedido);
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener el pedido" });
+  }
+},
+
 
     // Actualizar un pedido existente
     updatePedido: async (req: Request, res: Response): Promise<void> => {
-        try {
-            const pedido: IPedidos | null = await Pedido.findByIdAndUpdate(req.params.id, req.body, { new: true });
-            if (!pedido) {
-                res.status(404).json({ error: 'Pedido no encontrado' });
-                return;
-            }
-            res.json(pedido);
-        } catch (error: any) {
-            res.status(500).json({ error: 'Error al actualizar el pedido' });
-        }
-      },
+  try {
+    const pedido = await Pedido.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    ).populate("usuario").populate("panes");
+    if (!pedido) {
+      res.status(404).json({ error: "Pedido no encontrado" });
+      return;
+    }
+    res.json(pedido);
+  } catch (error: any) {
+    res.status(500).json({ error: "Error al actualizar el pedido" });
+  }
+},
+
 
     // Eliminar un pedido
-    deletePedido: async (req: Request, res: Response): Promise<void> => {
-        try {
-            const pedido: IPedidos | null = await Pedido.findByIdAndDelete(req.params.id);
-            if (!pedido) {
-                res.status(404).json({ error: 'Pedido no encontrado' });
-                return;
-            }
-            res.json({ message: 'Pedido eliminado correctamente' });
-        } catch (error: any) {
-            res.status(500).json({ error: 'Error al eliminar el pedido' });
-        }
-      }  
+   deletePedido: async (req: Request, res: Response): Promise<void> => {
+  try {
+    const pedido = await Pedido.findByIdAndDelete(req.params.id);
+    if (!pedido) {
+      res.status(404).json({ error: "Pedido no encontrado" });
+      return;
+    }
+    res.json({ message: "Pedido eliminado correctamente" });
+  } catch (error: any) {
+    res.status(500).json({ error: "Error al eliminar el pedido" });
+  }
+}
+
 
 }
 

@@ -55,7 +55,7 @@ const panesController: PanesController = {
              } else {
                 res.status(404).json({ error: 'Pan no encontrado' });
             }
-        } catch (error: any) {            res.status(500).json({ error: 'Error al actualizar el pan' });
+        } catch (error: any) {res.status(500).json({ error: 'Error al actualizar el pan' });
         }
     },
 

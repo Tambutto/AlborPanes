@@ -1,22 +1,16 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IPedidos extends Document {
-    cliente: string;
-    panes: { nombre: string; cantidad: number }[];
+    usuario: mongoose.Types.ObjectId;
+    panes: mongoose.Types.ObjectId[];
     total: number;
     fecha: Date;
 }
 
 const pedidoSchema = new Schema<IPedidos>(
     {
-        cliente: { type: String, required: true },
-        panes: [
-    {
-      nombre: { type: String, required: true },
-      cantidad: { type: Number, required: true }
-    }
-  ],
-        
+        usuario: { type: Schema.Types.ObjectId, ref: "Usuario", required: true },
+        panes: [{ type: Schema.Types.ObjectId, ref: "Pan", required:true }],        
         total: { type: Number, required: true },
         fecha: { type: Date, default: Date.now }
     }
