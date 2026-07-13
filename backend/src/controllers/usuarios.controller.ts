@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import Usuario from "../models/usuarios";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 interface UsuariosController {
   getUsuarios: (req: Request, res: Response) => Promise<void>;
@@ -7,6 +9,7 @@ interface UsuariosController {
   getUsuarioById: (req: Request, res: Response) => Promise<void>;
   updateUsuario: (req: Request, res: Response) => Promise<void>;
   deleteUsuario: (req: Request, res: Response) => Promise<void>;
+  loginUsuario: (req: Request, res: Response) => Promise<void>;
 }
 
 const usuariosController = {
@@ -24,9 +27,35 @@ const usuariosController = {
     // Crear un nuevo usuario
     createUsuario: async (req: Request, res: Response): Promise<void> => {
         try {
-            const nuevoUsuario = new Usuario(req.body);
+            const { nombre, email, password, rol } = req.body;
+
+            // Verifico si el email existe
+            const usuarioExistente = await Usuario.findOne({ email });
+            if (usuarioExistente) {
+                res.status(400).json({ error: 'El email ya está registrado' });
+                return;
+            }
+
+            // Encriptar la contraseña antes de guardarla
+            const salt = await bcrypt.genSalt(10);
+            const passwprdHash = await bcrypt.hash(password, salt);
+
+
+            const nuevoUsuario = new Usuario({
+                nombre,
+                email,
+                password: passwprdHash,
+                rol
+            });
+
             await nuevoUsuario.save();
-            res.status(201).json(nuevoUsuario);
+
+            res.status(201).json({
+                id: nuevoUsuario._id,
+                nombre: nuevoUsuario.nombre,
+                email: nuevoUsuario.email,
+                rol: nuevoUsuario.rol
+                });
         } catch (error: any) {
             res.status(500).json({ error: 'Error al crear el usuario' });
         }
@@ -73,6 +102,36 @@ const usuariosController = {
             res.status(500).json({ error: 'Error al eliminar el usuario' });
         }
     
-    }}
+    },
+    // Login de usuario
+    loginUsuario: async (req: Request, res: Response): Promise<void> => {
+        const { email, password } = req.body;
+
+        try {
+            const usuario = await Usuario.findOne({ email });
+            if (!usuario) {
+                res.status(400).json({ error: 'Usuario no encontrado' });
+                    return;
+                }
+                const passwordValido = await bcrypt.compare(password, usuario.password);
+                if(!passwordValido) {
+                    res.status(400).json({ error: 'Contraseña incorrecta' });
+                    return;
+                }
+
+                // Generar token JWT
+                const token = jwt.sign(
+                    { id: usuario.id, email: usuario.email, rol: (usuario as any).rol },
+                    process.env.JWT_SECRET || 'secreto',
+                    { expiresIn: '1h' }
+                );
+
+            // devolver el token al cliente
+            res.json({ token });
+        } catch (error: any) {
+                res.status(500).json({ error: 'Error en el login'})
+            }
+            }
+        };
 
     export default usuariosController;

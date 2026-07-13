@@ -1,13 +1,19 @@
 import { Router } from 'express';
 import usuariosController from '../controllers/usuarios.controller';
 import validarUsuario from "../middlewares/validarUsuario";
+import { verificarToken } from "../middlewares/auth";
 
 const router = Router();
 
 // Obtener todos los usuarios
-router.get('/', usuariosController.getUsuarios);
+router.get('/', verificarToken, usuariosController.getUsuarios);
 // Crear un nuevo usuario
 router.post('/', validarUsuario, usuariosController.createUsuario);
+// Registrar un nuevo usuario
+router.post("/register", usuariosController.createUsuario);
+// login de usuario
+router.post('/login', usuariosController.loginUsuario);
+
 // Obtener un usuario por ID
 router.get('/:id', usuariosController.getUsuarioById);
 // Actualizar un usuario por ID
