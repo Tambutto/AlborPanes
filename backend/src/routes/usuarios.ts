@@ -8,9 +8,9 @@ const router = Router();
 // Obtener todos los usuarios
 router.get('/', verificarToken, usuariosController.getUsuarios);
 // Crear un nuevo usuario
-router.post('/', validarUsuario, usuariosController.createUsuario);
+// router.post('/', validarUsuario, usuariosController.registerUsuario);
 // Registrar un nuevo usuario
-router.post("/register", usuariosController.createUsuario);
+router.post("/register", validarUsuario, usuariosController.registerUsuario);
 // login de usuario
 router.post('/login', usuariosController.loginUsuario);
 

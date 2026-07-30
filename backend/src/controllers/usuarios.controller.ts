@@ -25,7 +25,7 @@ const usuariosController = {
         },
 
     // Crear un nuevo usuario
-    createUsuario: async (req: Request, res: Response): Promise<void> => {
+    registerUsuario: async (req: Request, res: Response): Promise<void> => {
         try {
             const { nombre, email, password, rol } = req.body;
 
@@ -45,7 +45,7 @@ const usuariosController = {
                 nombre,
                 email,
                 password: passwprdHash,
-                rol
+                rol: rol || 'usuario' // Asignar rol por defecto si no se proporciona
             });
 
             await nuevoUsuario.save();
