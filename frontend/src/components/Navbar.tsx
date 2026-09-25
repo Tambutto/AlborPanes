@@ -2,14 +2,17 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary" >
+    <>
+    
+    <nav className=" navbar navbar-expand-lg bg-body-tertiary" >
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
-        <img src="./albor.jpeg" alt="Logo Albor Panes"
-            width="90"
-            height="90"
-            className="d-inline-block align-text-top me-2"
-            /></Link>
+        <img src="./Rebelde1.png" alt="Logo Albor Panes"
+           
+            className="logo-redondo d-inline-block align-text-top me-2"
+            />
+            </Link>
+            
         <button
           className="navbar-toggler"
           type="button"
@@ -21,9 +24,10 @@ const Navbar = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-
+      <h1 className="title">Rebelde Panes</h1>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          
+          <ul className="contenedor navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link className="nav-link active" to="/">Home</Link>
             </li>
@@ -44,6 +48,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+    </>
   );
 };
 

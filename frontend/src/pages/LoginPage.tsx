@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import '../styles/loginPage.css';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -23,8 +24,8 @@ export default function LoginPage() {
         };
 
         return (
-            <div>
-            <form onSubmit={handleLogin}>
+            <div className="login-container">
+            <form className="login-form" onSubmit={handleLogin}>
                 <h2>Login Page</h2>
                 <input 
                     type="email"
@@ -38,11 +39,11 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button type="submit">Login</button>
+                <button type="submit" className="btn-login">Login</button>
             </form>
             
 
-            <button onClick={handleVolver} style={{ marginTop: '10px' }}>
+            <button onClick={handleVolver} className="btn-login" >
             Volver
             </button>
             </div>

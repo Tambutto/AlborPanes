@@ -10,7 +10,7 @@ import Footer from "./components/footer";
 function App() {
   return (
     <BrowserRouter>
-        <h1>Albor Panes</h1>
+        
         <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
