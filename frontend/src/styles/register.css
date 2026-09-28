@@ -1,0 +1,49 @@
+/* Fondo de la página */
+.register-container {
+    font-family: "Nothing You Could Do", cursive;
+min-height: 72.5vh;
+background: linear-gradient(135deg, #F5EFDD, #b6983d);
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+.register-form {
+display: flex;
+flex-direction: column;
+width: 350px;
+background-color: #F5EFDD;
+padding: 30px;
+border-radius: 12px;
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.register-form h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.register-form input {
+    display: flex;
+    flex-direction: column;
+    width: 270px;
+    height: 40px;
+ margin: 10px;
+ border-radius: 5px;
+ border: 1px solid #b6983d;       
+}
+
+.btn-registerSubmit{
+  margin: 0 auto;
+ margin-top: 10px;
+ width: 100px;
+ border-radius: 5px;
+ border: 1px solid #b6983d;
+}
+
+.btn-register {
+    margin: 10px;
+ border-radius: 5px;
+ border: 1px solid #b6983d;
+}

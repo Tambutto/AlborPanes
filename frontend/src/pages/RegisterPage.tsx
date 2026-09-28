@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../styles/loginPage.css';
 
 const RegisterPage = () => {
     const [nombre, setNombre] = useState<string>('');
@@ -33,8 +34,10 @@ const RegisterPage = () => {
 
     return (
         <div>
-            <h1>Registrate</h1>
-            <form onSubmit={handleSubmit}>
+            
+            <div className="register-container">
+            <form className="register-form" onSubmit={handleSubmit}>
+              <h1>Registrate</h1>
                 <div>
                     <label htmlFor="">Nombre</label>
                     <input type="text" 
@@ -62,13 +65,14 @@ const RegisterPage = () => {
           />
         </div>
 
-        <button type="submit">Registrarse</button>
+        <button type="submit" className="btn-registerSubmit">Registrarse</button>
             </form>
 
              {/* Botón para volver */}
-      <button onClick={handleVolver} style={{ marginTop: '10px' }}>
+      <button onClick={handleVolver} className="btn-register">
         Volver
       </button>
+        </div>
         </div>
     );
 }
